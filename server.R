@@ -58,14 +58,14 @@ shinyServer(function(input, output) {
       tmp<-str_trim(unlist(str_split(input$geneList,",")))
       geneIds<-lookupGeneId(dat,tmp)
     } else {
-      geneIds = c("")
+      return(NULL)
     }
     
     
     colorChoices = c("State","factor(day)")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
-    plot_genes_jitter(dat[c(geneIds)],grouping=color_by,color_by=color_by,plot_trend = TRUE)
+    plot_genes_jitter(dat[c(geneIds)],grouping=color_by,color_by=color_by,plot_trend = TRUE,cell_size=3)
     
   })
   
@@ -74,14 +74,14 @@ shinyServer(function(input, output) {
       tmp<-str_trim(unlist(str_split(input$geneList,",")))
       geneIds<-lookupGeneId(dat,tmp)
     } else {
-      geneIds = c("")
+     return(NULL)
     }
     
     
     colorChoices = c("State","factor(day)")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
-    plot_genes_in_pseudotime(dat[c(geneIds)],color_by=color_by)
+    plot_genes_in_pseudotime(dat[c(geneIds)],color_by=color_by,cell_size=3)
     
   })
   
