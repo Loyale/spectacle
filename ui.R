@@ -33,7 +33,11 @@ shinyUI(fluidPage(
 
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("spanningTree",height=1000,width=1000)
+      tabsetPanel(
+        tabPanel("Spanning Tree",plotOutput("spanningTree",height=1000,width=1000)),
+        tabPanel("Jitter",plotOutput("Jitter",height=1000,width=1000)),
+        tabPanel("Pseudotime",plotOutput("Pseudotime",height=1000,width=1000))
+      )
     )
   )
 ))

@@ -46,10 +46,42 @@ shinyServer(function(input, output) {
     }
     
     colorChoices = c("State","factor(day)")
-    color_by=colorChoices[input$colorBy]
+    color_by=colorChoices[as.numeric(input$colorBy)]
     
     # draw the spanning tree with appropriate marker genes
-    plot_spanning_tree(dat,color_by=colorChoices[as.numeric(input$colorBy)],markers=markerList) + coord_equal(0.8)
+    plot_spanning_tree(dat,color_by=color_by,markers=markerList) + coord_equal(0.8)
+    
+  })
+  
+  output$Jitter <-renderPlot({
+    if(input$geneList != "Comma separated gene names..."){
+      tmp<-str_trim(unlist(str_split(input$geneList,",")))
+      geneIds<-lookupGeneId(dat,tmp)
+    } else {
+      geneIds = c("")
+    }
+    
+    
+    colorChoices = c("State","factor(day)")
+    color_by=colorChoices[as.numeric(input$colorBy)]
+
+    plot_genes_jitter(dat[c(geneIds)],grouping=color_by,color_by=color_by,plot_trend = TRUE)
+    
+  })
+  
+  output$Pseudotime <-renderPlot({
+    if(input$geneList != "Comma separated gene names..."){
+      tmp<-str_trim(unlist(str_split(input$geneList,",")))
+      geneIds<-lookupGeneId(dat,tmp)
+    } else {
+      geneIds = c("")
+    }
+    
+    
+    colorChoices = c("State","factor(day)")
+    color_by=colorChoices[as.numeric(input$colorBy)]
+
+    plot_genes_in_pseudotime(dat[c(geneIds)],color_by=color_by)
     
   })
   
