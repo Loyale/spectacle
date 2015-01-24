@@ -49,7 +49,7 @@ shinyServer(function(input, output) {
     color_by=colorChoices[as.numeric(input$colorBy)]
     
     # draw the spanning tree with appropriate marker genes
-    plot_spanning_tree(dat,color_by=color_by,markers=markerList) + coord_equal(0.8)
+    plot_spanning_tree(dat,color_by=color_by,marker=markerList) + coord_equal(0.8)
     
   })
   
