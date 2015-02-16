@@ -15,7 +15,7 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
-      
+
       selectInput("colorBy",
                 label = h3("Color Parameter"),
                 choices=list("State" = 1,
@@ -23,7 +23,7 @@ shinyUI(fluidPage(
                             ),
                 selected = 1
                   ),
-      
+
       textInput("geneList",
                 label = h3("Marker Gene List"),
                 value = "Comma separated gene names..."
@@ -36,7 +36,8 @@ shinyUI(fluidPage(
       tabsetPanel(
         tabPanel("Spanning Tree",plotOutput("spanningTree",height=1000,width=1000)),
         tabPanel("Jitter",plotOutput("Jitter",height=1000,width=1000)),
-        tabPanel("Pseudotime",plotOutput("Pseudotime",height=1000,width=1000))
+        tabPanel("Pseudotime",plotOutput("Pseudotime",height=1000,width=1000)),
+        tabPanel("Branched Pseudotime",plotOutput("BranchedPseudotime",height=1000,width=1000))
       )
     )
   )

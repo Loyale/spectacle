@@ -14,9 +14,9 @@ library(stringr)
 library(dplyr)
 library(tidyr)
 
-load("data/dat.hc.iN.RData")
+load("data/dat.iN.RData")
 
-dat<-dat.hc.iN
+dat<-dat.iN
 
 lookupGeneName<-function(eset,gene_id){
   res <- fData(eset[gene_id,])$gene_short_name
@@ -35,24 +35,24 @@ lookupGeneId<-function(eset,gene_names){
 shinyServer(function(input, output) {
 
 
-  
+
   output$spanningTree <- renderPlot({
-    
+
     if(input$geneList != "Comma separated gene names..."){
         tmp<-str_trim(unlist(str_split(input$geneList,",")))
         markerList<-tmp
     } else {
       markerList = c("")
     }
-    
+
     colorChoices = c("State","factor(day)")
     color_by=colorChoices[as.numeric(input$colorBy)]
-    
+
     # draw the spanning tree with appropriate marker genes
-    plot_spanning_tree(dat,color_by=color_by,markers=markerList) + coord_equal(0.8)
-    
+    plot_spanning_tree(dat,color_by=color_by,marker=markerList) + coord_equal(0.8)
+
   })
-  
+
   output$Jitter <-renderPlot({
     if(input$geneList != "Comma separated gene names..."){
       tmp<-str_trim(unlist(str_split(input$geneList,",")))
@@ -60,15 +60,15 @@ shinyServer(function(input, output) {
     } else {
       return(NULL)
     }
-    
-    
+
+
     colorChoices = c("State","factor(day)")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
     plot_genes_jitter(dat[c(geneIds)],grouping=color_by,color_by=color_by,plot_trend = TRUE,cell_size=3)
-    
+
   })
-  
+
   output$Pseudotime <-renderPlot({
     if(input$geneList != "Comma separated gene names..."){
       tmp<-str_trim(unlist(str_split(input$geneList,",")))
@@ -76,14 +76,29 @@ shinyServer(function(input, output) {
     } else {
      return(NULL)
     }
-    
-    
+
+
     colorChoices = c("State","factor(day)")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
     plot_genes_in_pseudotime(dat[c(geneIds)],color_by=color_by,cell_size=3)
-    
+
   })
-  
-  
+
+  output$BranchedPseudotime <-renderPlot({
+    if(input$geneList != "Comma separated gene names..."){
+      tmp<-str_trim(unlist(str_split(input$geneList,",")))
+      geneIds<-lookupGeneId(dat,tmp)
+    } else {
+     return(NULL)
+    }
+
+
+    colorChoices = c("State","factor(day)")
+    color_by=colorChoices[as.numeric(input$colorBy)]
+
+    plot_genes_branched_pseudotime(dat[c(geneIds)],color_by=color_by,cell_size=3)
+
+  })
+
 })
