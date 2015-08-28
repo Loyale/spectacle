@@ -36,7 +36,7 @@ shinyUI(fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Spanning Tree",plotOutput("spanningTree",brush = "spanning_brush",height=1000,width=1000),
-                 verbatimTextOutput("cellInfo")),
+                 dataTableOutput("cellInfo")),
         tabPanel("Jitter",plotOutput("Jitter",height=1000,width=1000)),
         tabPanel("Pseudotime",plotOutput("Pseudotime",height=1000,width=1000)),
         tabPanel("Branched Pseudotime",plotOutput("BranchedPseudotime",height=1000,width=1000))

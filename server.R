@@ -105,7 +105,7 @@ shinyServer(function(input, output) {
 
   })
   
-  output$cellInfo <-renderPrint({
+  output$cellInfo <-renderDataTable({
     #brushedPoints(pData(dat),input$spanning_brush)
     cells<-colnames(reducedDimS(dat))[reducedDimS(dat)[2,] > input$spanning_brush$ymin & 
                                    reducedDimS(dat)[2,] < input$spanning_brush$ymax & 
