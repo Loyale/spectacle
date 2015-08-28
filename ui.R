@@ -19,7 +19,8 @@ shinyUI(fluidPage(
       selectInput("colorBy",
                 label = h3("Color Parameter"),
                 choices=list("State" = 1,
-                            "Day" = 2
+                            "Day" = 2,
+                            "Protocol" = 3
                             ),
                 selected = 1
                   ),
@@ -34,7 +35,8 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       tabsetPanel(
-        tabPanel("Spanning Tree",plotOutput("spanningTree",height=1000,width=1000)),
+        tabPanel("Spanning Tree",plotOutput("spanningTree",brush = "spanning_brush",height=1000,width=1000),
+                 verbatimTextOutput("cellInfo")),
         tabPanel("Jitter",plotOutput("Jitter",height=1000,width=1000)),
         tabPanel("Pseudotime",plotOutput("Pseudotime",height=1000,width=1000)),
         tabPanel("Branched Pseudotime",plotOutput("BranchedPseudotime",height=1000,width=1000))

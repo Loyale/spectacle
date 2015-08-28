@@ -13,10 +13,14 @@ library(marray)
 library(stringr)
 library(dplyr)
 library(tidyr)
+library(knitr)
 
-load("data/dat.iN.RData")
 
-dat<-dat.iN
+#load("data/dat.iN.RData")
+load("data/dat_filtered_spec.RData")
+
+#dat<-dat.iN
+dat<-dat.filtered
 
 lookupGeneName<-function(eset,gene_id){
   res <- fData(eset[gene_id,])$gene_short_name
@@ -45,7 +49,7 @@ shinyServer(function(input, output) {
       markerList = c("")
     }
 
-    colorChoices = c("State","factor(day)")
+    colorChoices = c("State","factor(day)","protocol")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
     # draw the spanning tree with appropriate marker genes
@@ -62,7 +66,7 @@ shinyServer(function(input, output) {
     }
 
 
-    colorChoices = c("State","factor(day)")
+    colorChoices = c("State","factor(day)","protocol")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
     plot_genes_jitter(dat[c(geneIds)],grouping=color_by,color_by=color_by,plot_trend = TRUE,cell_size=3)
@@ -78,7 +82,7 @@ shinyServer(function(input, output) {
     }
 
 
-    colorChoices = c("State","factor(day)")
+    colorChoices = c("State","factor(day)","protocol")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
     plot_genes_in_pseudotime(dat[c(geneIds)],color_by=color_by,cell_size=3)
@@ -94,11 +98,22 @@ shinyServer(function(input, output) {
     }
 
 
-    colorChoices = c("State","factor(day)")
+    colorChoices = c("State","factor(day)","protocol")
     color_by=colorChoices[as.numeric(input$colorBy)]
 
     plot_genes_branched_pseudotime(dat[c(geneIds)],color_by=color_by,cell_size=3)
 
+  })
+  
+  output$cellInfo <-renderPrint({
+    #brushedPoints(pData(dat),input$spanning_brush)
+    cells<-colnames(reducedDimS(dat))[reducedDimS(dat)[2,] > input$spanning_brush$ymin & 
+                                   reducedDimS(dat)[2,] < input$spanning_brush$ymax & 
+                                   reducedDimS(dat)[1,] > input$spanning_brush$xmin & 
+                                   reducedDimS(dat)[1,] < input$spanning_brush$xmax]
+    #cells
+    pData(dat[,cells])[,-c(1,2,3)]
+    #input$spanning_brush
   })
 
 })
